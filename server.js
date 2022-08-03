@@ -56,6 +56,12 @@ function filterByQuery(query, animalsArray) {
   //return filtered results
   return filteredResults;
 }
+
+// Taken an ID and array of animals returns a single animal object
+function findById(id, animalsArray) {
+  const result = animalsArray.filter((animal) => animal.id == id)[0];
+  return result;
+}
 /** Main Program
  ***************************************************************************************************/
 // add the route
@@ -69,6 +75,17 @@ app.get("/api/animals", (request, response) => {
   }
   //show in the browser
   response.json(results);
+});
+
+// The req object gives us access to another property for this case, req.params. Unlike the query
+// object, the param object needs to be defined in the route path, with <route>/:<parameterName>.
+app.get("/api/animals/:id", (req, res) => {
+  const result = findById(req.params.id, animals);
+  if (result) {
+    res.json(result);
+  } else {
+    res.send(404);
+  }
 });
 
 // listen for requests
